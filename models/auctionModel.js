@@ -45,10 +45,22 @@ function deleteAuction(id) {
   return db.prepare("DELETE FROM auctions WHERE id = ?").run(id);
 }
 
+function markAuctionAsEnded(id) {
+    return db.prepare("UPDATE auctions SET ended = 1 WHERE id = ?").run(id);
+  }
+  
+function getWinningBid(auctionId) {
+    return db
+      .prepare("SELECT * FROM bids WHERE auctionId = ? ORDER BY amount DESC LIMIT 1")
+      .get(auctionId);
+}  
+
 module.exports = {
   getAllAuctions,
   getAuctionById,
   createAuction,
   updateAuction,
   deleteAuction,
+  markAuctionAsEnded,
+  getWinningBid,
 };

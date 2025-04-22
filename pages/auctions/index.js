@@ -31,34 +31,44 @@ export default function AuctionList() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {auctions.map((auction) => (
-        <div
-            key={auction.id}
-            className="relative border rounded-lg shadow-sm overflow-hidden hover:shadow-lg transition"
-        >
-            {auction.image && (
+            <div>
+            <Link key={auction.id} href={`/auctions/${auction.id}`} className="block">
+            <div className="relative border rounded-lg shadow-sm overflow-hidden hover:shadow-lg transition">
+              {auction.image && (
                 <img
-                    src={auction.image}
-                    alt={auction.title}
-                    className="w-full h-48 object-cover"
+                  src={auction.image}
+                  alt={auction.title}
+                  className="w-full h-48 object-cover"
                 />
-            )}
-        <div className="p-4">
-            <h2 className="text-xl font-semibold">{auction.title}</h2>
-            <p className="text-sm text-gray-500 mb-2">{auction.category}</p>
-            <p className="text-lg font-bold text-green-600">
-                {auction.startingPrice} zł
-            </p>
-            <p className="text-sm mt-2 text-gray-600">{auction.description}</p>
-        </div>
-
-        <button
-            onClick={() => handleDelete(auction.id)}
-            className="absolute top-2 right-2 text-red-500 hover:text-red-700 text-xl"
-            title="Usuń aukcję"
-        >
-        ❌
-        </button>
-    </div>
+              )}
+              <div className="p-4">
+                <h2 className="text-xl font-semibold">{auction.title}</h2>
+                <p className="text-sm text-gray-500 mb-2">{auction.category}</p>
+                <p className="text-lg font-bold text-green-600">
+                  {auction.startingPrice} zł
+                </p>
+                <p className="text-sm mt-2 text-gray-600">{auction.description}</p>
+              </div>
+            </div>
+          </Link>
+          
+          <div className="flex justify-end gap-2 mt-2">
+            <button
+              onClick={() => handleDelete(auction.id)}
+              className="text-red-500 hover:text-red-700 text-xl"
+              title="Usuń aukcję"
+            >
+              ❌
+            </button>
+            <Link
+              href={`/auctions/${auction.id}/edit`}
+              className="text-blue-500 hover:underline text-sm"
+            >
+              ✏️ Edytuj
+            </Link>
+          </div>
+          </div>
+          
     ))}
 
     </div>
