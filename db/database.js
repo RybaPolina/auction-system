@@ -8,4 +8,16 @@ db.exec(`
   );
 `);
 
+db.exec(`
+  CREATE TABLE IF NOT EXISTS auctions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    description TEXT,
+    startingPrice REAL,
+    category TEXT,
+    image TEXT,
+    userId INTEGER
+  );
+`);
+
 module.exports = db;
