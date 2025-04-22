@@ -29,10 +29,18 @@ export default function AuctionPage() {
   
     const highestBid = bids.length > 0 ? bids[0].amount : auction.startingPrice;
   
-    if (parseFloat(amount) <= highestBid) {
-      setError("Oferta musi być wyższa niż aktualna!");
-      return;
+    const numericAmount = parseFloat(amount);
+
+    if (!amount || isNaN(numericAmount)) {
+        setError("Wprowadź poprawną liczbę.");
+        return;
     }
+
+    if (numericAmount <= highestBid) {
+        setError(`Oferta musi być wyższa niż aktualna (${highestBid} zł)!`);
+        return;
+    }
+
   
     fetch("/api/bids", {
       method: "POST",
@@ -68,19 +76,26 @@ export default function AuctionPage() {
       </p>
       <p className="text-sm text-gray-400">Kategoria: {auction.category}</p>
 
-      <form onSubmit={handleBidSubmit} className="flex gap-4">
+      {!auction.ended ? (
+    <form onSubmit={handleBidSubmit} className="flex gap-4">
         <input
-          type="number"
-          min={auction.startingPrice}
-          placeholder="Twoja oferta"
-          className="border px-4 py-2 rounded w-full"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
+        type="number"
+        min={auction.startingPrice}
+        placeholder="Twoja oferta"
+        className="border px-4 py-2 rounded w-full"
+        value={amount}
+        onChange={(e) => setAmount(e.target.value)}
         />
         <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-          Licytuj
+        Licytuj
         </button>
-      </form>
+    </form>
+    ) : (
+        <p className="text-red-500 font-medium mt-4">
+            Ta aukcja została zakończona. Licytowanie jest wyłączone.
+        </p>
+        )}
+
 
       <div>
         {error && (
